@@ -3,7 +3,7 @@ import { join, resolve } from 'node:path';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-
+import path from 'path';
 import { peerDependencies } from './package.json';
 
 export default defineConfig({
@@ -11,6 +11,11 @@ export default defineConfig({
     react(),
     dts({ rollupTypes: true }), // Output .d.ts files
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     target: 'esnext',
     minify: false,

@@ -56,6 +56,12 @@
     // Ensure the public class field initialization is transpiled correctly to match the future JS standard.
     "useDefineForClassFields": true,
 
+    // shadcn/ui
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     // Type-checking options
     "strict": true,
     "noFallthroughCasesInSwitch": true,

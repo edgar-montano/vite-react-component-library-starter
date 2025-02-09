@@ -3,14 +3,7 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /**
-   * The color of the button.
-   */
   color?: 'primary' | 'success' | 'info' | 'warning' | 'error';
-
-  /**
-   * The size of the button.
-   */
   size?: 'small' | 'medium' | 'large';
 }
 
