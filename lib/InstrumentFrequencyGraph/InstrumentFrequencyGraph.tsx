@@ -15,6 +15,32 @@ interface InstrumentFrequencyGraphProps {
   instrumentData: InstrumentData[];
 }
 
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: {
+      name: string;
+      startFreq: number;
+      endFreq: number;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      [key: string]: any;
+    };
+  }>;
+}
+
+const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
+  if (active && payload && payload.length > 0) {
+    const data = payload[0].payload;
+    return (
+      <div className="custom-tooltip">
+        <p>{data.name}</p>
+        <p>{`Frequency Range: ${data.startFreq}Hz - ${data.endFreq}Hz`}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 const InstrumentFrequencyGraph: React.FC<InstrumentFrequencyGraphProps> = ({ instrumentData }) => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [oscillator, setOscillator] = useState<OscillatorNode | null>(null);
@@ -137,22 +163,7 @@ const InstrumentFrequencyGraph: React.FC<InstrumentFrequencyGraphProps> = ({ ins
               dataKey="name"
               width={100}
             />
-            <Tooltip
-              content={({ active, payload }) => {
-                if (active && payload?.[0]?.payload) {
-                  const data = payload[0].payload;
-                  return (
-                    <div className="bg-gray-800 p-2 rounded shadow">
-                      <p className="text-white">{data.name}</p>
-                      <p className="text-gray-300">
-                        Range: {formatFreq(data.startFreq)} - {formatFreq(data.endFreq)}
-                      </p>
-                    </div>
-                  );
-                }
-                return null;
-              }}
-            />
+            <Tooltip content={CustomTooltip} />
             <Bar
               dataKey="endFreq"
               shape={<CustomBar />}

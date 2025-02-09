@@ -79,7 +79,7 @@
     "storybook": "7.6.20",
     "tailwind-merge": "2.6.0",
     "tailwindcss": "3.4.17",
-    "typescript": "5.7.2",
+    "typescript": "~5.3.3",
     "vite": "5.4.11",
     "vite-plugin-dts": "3.9.1",
     "vitest": "1.6.0"

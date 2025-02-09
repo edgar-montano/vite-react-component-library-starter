@@ -1,26 +1,22 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import InstrumentFrequencyGraph from './InstrumentFrequencyGraph';
+import { InstrumentFrequencyGraph } from './InstrumentFrequencyGraph';
 import { instrumentData } from './InstrumentFrequencyGraph.utils';
 
-const meta: Meta<typeof InstrumentFrequencyGraph> = {
-  title: 'Visualizations/InstrumentFrequencyGraph',
+const meta = {
+  title: 'Components/InstrumentFrequencyGraph',
   component: InstrumentFrequencyGraph,
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
-};
+} satisfies Meta<typeof InstrumentFrequencyGraph>;
 
 export default meta;
-type Story = StoryObj<typeof InstrumentFrequencyGraph>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => (
-    <div className="w-[800px]">
-      <InstrumentFrequencyGraph instrumentData={instrumentData} />
-    </div>
-  ),
+  args: {
+    instrumentData: instrumentData,
+  },
 };
 
 export const Narrow: Story = {

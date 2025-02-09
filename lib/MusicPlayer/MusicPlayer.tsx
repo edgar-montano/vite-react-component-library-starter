@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2 } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
@@ -32,20 +32,22 @@ export const MusicPlayer = ({
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-      audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
-      audioRef.current.addEventListener('ended', handleEnded);
+    const currentAudio = audioRef.current;
+
+    if (currentAudio) {
+      currentAudio.addEventListener('timeupdate', handleTimeUpdate);
+      currentAudio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      currentAudio.addEventListener('ended', handleEnded);
     }
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-        audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
-        audioRef.current.removeEventListener('ended', handleEnded);
+      if (currentAudio) {
+        currentAudio.removeEventListener('timeupdate', handleTimeUpdate);
+        currentAudio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        currentAudio.removeEventListener('ended', handleEnded);
       }
     };
-  }, []);
+  }, [handleEnded]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -59,10 +61,10 @@ export const MusicPlayer = ({
     }
   };
 
-  const handleEnded = () => {
+  const handleEnded = useCallback(() => {
     setIsPlaying(false);
     onEnded?.();
-  };
+  }, [onEnded]);
 
   const togglePlay = () => {
     if (audioRef.current) {
