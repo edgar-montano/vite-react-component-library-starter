@@ -192,10 +192,10 @@ const InstrumentFrequencyGraph = ({ instrumentData }: InstrumentFrequencyGraphPr
               dataKey="name"
               width={100}
             />
-            <Tooltip content={CustomTooltip} />
+            <Tooltip<ValueType, NameType> content={CustomTooltip} />
             <Bar
               dataKey="endFreq"
-              shape={<CustomBar />}
+              shape={CustomBar}
             />
           </BarChart>
         </ResponsiveContainer>
