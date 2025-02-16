@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import _ from 'lodash';
 import type { InstrumentData } from './InstrumentFrequencyGraph.utils';
+import PropTypes from 'prop-types';
 
 declare global {
   interface Window {
@@ -22,26 +22,43 @@ interface TooltipProps {
       name: string;
       startFreq: number;
       endFreq: number;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      [key: string]: any;
+       
+      // [key: string]: any;
     };
   }>;
 }
 
-const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
-  if (active && payload && payload.length > 0) {
+const CustomTooltip = ({ active, payload }: TooltipProps) => {
+  if (active && payload && payload.length > 0 && payload[0]?.payload) {
     const data = payload[0].payload;
     return (
-      <div className="custom-tooltip">
-        <p>{data.name}</p>
-        <p>{`Frequency Range: ${data.startFreq}Hz - ${data.endFreq}Hz`}</p>
+      <div className="custom-tooltip bg-black text-white opacity-75 p-2 rounded-md">
+        <p className="font-bold text-xl">{data.name}</p>
+        <p>
+          <span className="font-bold">Frequency: </span>
+          <span className="text-xs">{`${data.startFreq}Hz - ${data.endFreq}Hz`}</span>
+        </p>
       </div>
     );
   }
   return null;
 };
 
-const InstrumentFrequencyGraph: React.FC<InstrumentFrequencyGraphProps> = ({ instrumentData }) => {
+CustomTooltip.propTypes = {
+  active: PropTypes.bool,
+  payload: PropTypes.arrayOf(
+    PropTypes.shape({
+      payload: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        startFreq: PropTypes.number.isRequired,
+        endFreq: PropTypes.number.isRequired,
+        color: PropTypes.string.isRequired,
+      }).isRequired,
+    }),
+  ),
+};
+
+const InstrumentFrequencyGraph = ({ instrumentData }: InstrumentFrequencyGraphProps) => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [oscillator, setOscillator] = useState<OscillatorNode | null>(null);
 
@@ -109,7 +126,7 @@ const InstrumentFrequencyGraph: React.FC<InstrumentFrequencyGraphProps> = ({ ins
     };
   }
 
-  const CustomBar: React.FC<CustomBarProps> = ({ x, y, width, height, payload }) => {
+  const CustomBar = ({ x, y, width, height, payload }: CustomBarProps) => {
     if (!payload || typeof x !== 'number' || typeof y !== 'number') {
       return null;
     }
@@ -139,8 +156,20 @@ const InstrumentFrequencyGraph: React.FC<InstrumentFrequencyGraphProps> = ({ ins
     );
   };
 
+  CustomBar.propTypes = {
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    payload: PropTypes.shape({
+      startFreq: PropTypes.number.isRequired,
+      endFreq: PropTypes.number.isRequired,
+      color: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
   return (
-    <div className="p-4 bg-gray-900 text-white rounded-lg">
+    <div className="p-4 text-black bg-white rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Instrument Frequency Ranges</h2>
       <div className="h-96">
         <ResponsiveContainer
@@ -192,6 +221,18 @@ const InstrumentFrequencyGraph: React.FC<InstrumentFrequencyGraphProps> = ({ ins
       </div>
     </div>
   );
+};
+
+InstrumentFrequencyGraph.propTypes = {
+  instrumentData: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      startFreq: PropTypes.number.isRequired,
+      endFreq: PropTypes.number.isRequired,
+      category: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default InstrumentFrequencyGraph;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { InstrumentFrequencyGraph } from './InstrumentFrequencyGraph';
+import InstrumentFrequencyGraph from './InstrumentFrequencyGraph';
 import { instrumentData } from './InstrumentFrequencyGraph.utils';
 
 const meta = {
@@ -7,6 +7,9 @@ const meta = {
   component: InstrumentFrequencyGraph,
   parameters: {
     layout: 'centered',
+  },
+  args: {
+    instrumentData: instrumentData,
   },
 } satisfies Meta<typeof InstrumentFrequencyGraph>;
 
@@ -20,17 +23,23 @@ export const Default: Story = {
 };
 
 export const Narrow: Story = {
-  render: () => (
+  args: {
+    instrumentData: instrumentData,
+  },
+  render: (args) => (
     <div className="w-[400px]">
-      <InstrumentFrequencyGraph instrumentData={instrumentData} />
+      <InstrumentFrequencyGraph {...args} />
     </div>
   ),
 };
 
 export const Wide: Story = {
-  render: () => (
+  args: {
+    instrumentData: instrumentData,
+  },
+  render: (args) => (
     <div className="w-[1200px]">
-      <InstrumentFrequencyGraph instrumentData={instrumentData} />
+      <InstrumentFrequencyGraph {...args} />
     </div>
   ),
 };

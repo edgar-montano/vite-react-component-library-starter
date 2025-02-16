@@ -39,6 +39,7 @@
     "build:lib": "tsc && vite build",
     "build:analyze": "tsc && vite build && npx vite-bundle-visualizer",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "format": "prettier . --write --ignore-unknown",
     "prepare": "husky install"
   },
@@ -96,9 +97,11 @@
     "@tiptap/react": "2.10.4",
     "@tiptap/starter-kit": "2.10.4",
     "@tiptap/suggestion": "2.10.4",
+    "@types/prop-types": "15.7.14",
     "class-variance-authority": "0.7.1",
     "lodash": "4.17.21",
     "lucide-react": "0.469.0",
+    "prop-types": "15.8.1",
     "recharts": "2.15.1",
     "tailwindcss-animate": "1.0.7",
     "tone": "15.0.4"
