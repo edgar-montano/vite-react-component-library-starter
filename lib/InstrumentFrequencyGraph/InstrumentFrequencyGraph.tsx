@@ -22,7 +22,7 @@ interface TooltipProps {
       name: string;
       startFreq: number;
       endFreq: number;
-       
+
       // [key: string]: any;
     };
   }>;
